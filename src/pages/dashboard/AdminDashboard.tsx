@@ -45,7 +45,7 @@ export function AdminDashboard() {
             {cvSubmissions.length === 0 && <p className="text-gray-500">{t('no_cv_admin')}</p>}
             {cvSubmissions.map((cv, idx) => (
               <motion.div key={cv.id} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: idx * 0.05 }} className="bg-white p-6 rounded-2xl shadow-sm border border-gray-200">
-                <div className="flex items-center justify-between border-b border-gray-100 pb-4 mb-4">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-gray-100 pb-4 mb-4 gap-4">
                   <div>
                     <h3 className="font-bold tracking-tight text-gray-900 text-lg">
                       {cv.candidate_name ? `${t('cv')}: ${cv.candidate_name}` : `Submission ID: ${cv.id}`}
@@ -81,7 +81,7 @@ export function AdminDashboard() {
             {jobRequests.length === 0 && <p className="text-gray-500">{t('no_job_admin')}</p>}
             {jobRequests.map((job, idx) => (
               <motion.div key={job.id} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: idx * 0.05 }} className="bg-white p-6 rounded-2xl shadow-sm border border-gray-200">
-                <div className="flex items-center justify-between border-b border-gray-100 pb-4 mb-4">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-gray-100 pb-4 mb-4 gap-4">
                   <div>
                     <h3 className="font-bold tracking-tight text-gray-900 text-xl">{job.title}</h3>
                     <div className="text-sm text-gray-500 flex flex-wrap items-center gap-x-4 gap-y-1 mt-1">

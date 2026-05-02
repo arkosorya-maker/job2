@@ -45,25 +45,28 @@ export function Login() {
 
       <div className="flex bg-gray-100 p-1 rounded-xl mb-8">
         <button
+          type="button"
           onClick={() => setRole('candidate')}
-          className={`flex-1 flex items-center justify-center gap-2 py-2.5 text-sm font-semibold rounded-lg transition-all ${role === 'candidate' ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-500 hover:text-gray-900'}`}
+          className={`flex-1 flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 py-3 sm:py-2.5 text-xs sm:text-sm font-semibold rounded-lg transition-all ${role === 'candidate' ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-500 hover:text-gray-900'}`}
         >
           <UserIcon className="h-4 w-4" />
-          <span className="hidden sm:inline">{t('candidate')}</span>
+          <span>{t('candidate')}</span>
         </button>
         <button
+          type="button"
           onClick={() => setRole('employer')}
-          className={`flex-1 flex items-center justify-center gap-2 py-2.5 text-sm font-semibold rounded-lg transition-all ${role === 'employer' ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-500 hover:text-gray-900'}`}
+          className={`flex-1 flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 py-3 sm:py-2.5 text-xs sm:text-sm font-semibold rounded-lg transition-all ${role === 'employer' ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-500 hover:text-gray-900'}`}
         >
           <Briefcase className="h-4 w-4" />
-           <span className="hidden sm:inline">{t('employer')}</span>
+           <span>{t('employer')}</span>
         </button>
          <button
+          type="button"
           onClick={() => setRole('admin')}
-          className={`flex-1 flex items-center justify-center gap-2 py-2.5 text-sm font-semibold rounded-lg transition-all ${role === 'admin' ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-500 hover:text-gray-900'}`}
+          className={`flex-1 flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 py-3 sm:py-2.5 text-xs sm:text-sm font-semibold rounded-lg transition-all ${role === 'admin' ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-500 hover:text-gray-900'}`}
         >
           <Shield className="h-4 w-4" />
-          <span className="hidden sm:inline">{t('admin')}</span>
+          <span>{t('admin')}</span>
         </button>
       </div>
 

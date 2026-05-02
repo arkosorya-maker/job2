@@ -50,8 +50,8 @@ export function UserDashboard() {
         )}
 
         {isCandidate && myCVs.map(cv => (
-          <motion.div key={cv.id} className="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm">
-            <div className="flex items-center justify-between mb-8">
+          <motion.div key={cv.id} className="bg-white p-6 sm:p-8 rounded-3xl border border-gray-100 shadow-sm overflow-hidden">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-6 sm:mb-8 gap-4">
               <div className="flex items-center gap-3">
                  <div className="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-xl flex items-center justify-center font-bold text-xl uppercase">{t('cv')}</div>
                  <div>
@@ -88,8 +88,8 @@ export function UserDashboard() {
         )}
 
         {!isCandidate && myJobs.map(job => (
-          <motion.div key={job.id} className="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm">
-            <div className="flex items-center justify-between mb-8 pb-6 border-b border-gray-100">
+          <motion.div key={job.id} className="bg-white p-6 sm:p-8 rounded-3xl border border-gray-100 shadow-sm overflow-hidden">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-6 sm:mb-8 pb-6 border-b border-gray-100 gap-4">
               <div className="flex items-center gap-3">
                  <div>
                     <h3 className="font-bold text-gray-900 text-xl">{job.title}</h3>

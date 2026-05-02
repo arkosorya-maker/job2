@@ -186,7 +186,7 @@ export function JobForm() {
                 />
               </div>
 
-               <div className="grid grid-cols-2 gap-4">
+               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
                  <div>
                   <label className="block text-sm font-semibold text-gray-900 mb-2">{t('exp_req')}</label>
                   <Input 
@@ -209,7 +209,7 @@ export function JobForm() {
                 </div>
               </div>
 
-               <div className="grid grid-cols-2 gap-4">
+               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
                 <div>
                   <label className="block text-sm font-semibold text-gray-900 mb-2">{t('min_salary')}</label>
                   <Input 
