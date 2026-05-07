@@ -19,10 +19,8 @@ export function CVForm() {
   const [isSubmitted, setIsSubmitted] = useState(false);
 
   useEffect(() => {
-    if (!isLoaded) {
-      fetchData();
-    }
-  }, [fetchData, isLoaded]);
+    fetchData();
+  }, [fetchData]);
 
   const baseQuestions: FormQuestion[] = useMemo(() => {
     const defaults: FormQuestion[] = [

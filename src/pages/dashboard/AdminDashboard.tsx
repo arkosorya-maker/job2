@@ -10,10 +10,8 @@ export function AdminDashboard() {
   const [tab, setTab] = useState<'cv' | 'job' | 'settings'>('cv');
 
   useEffect(() => {
-    if (!isLoaded) {
-      fetchData();
-    }
-  }, [fetchData, isLoaded]);
+    fetchData();
+  }, [fetchData]);
 
   return (
     <div className="max-w-6xl mx-auto py-8 px-4">

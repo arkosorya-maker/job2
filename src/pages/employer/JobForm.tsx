@@ -18,10 +18,8 @@ export function JobForm() {
   const [extraAnswers, setExtraAnswers] = useState<Record<string, any>>({});
 
   useEffect(() => {
-    if (!isLoaded) {
-      fetchData();
-    }
-  }, [fetchData, isLoaded]);
+    fetchData();
+  }, [fetchData]);
 
   const [formData, setFormData] = useState({
     title: '',
