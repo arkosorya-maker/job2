@@ -1,10 +1,8 @@
 import React, { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router';
 import { useDataStore } from '../../store/dataStore';
-import { useAuthStore } from '../../store/authStore';
 import { Button } from '../../components/ui/Button';
 import { Input } from '../../components/ui/Input';
-import { InlineAuth } from '../../components/auth/InlineAuth';
 import { motion, AnimatePresence } from 'motion/react';
 import { ArrowRight, ArrowLeft, CheckCircle2, Send } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
@@ -13,7 +11,6 @@ import { FormQuestion, QuestionType } from '../../types';
 export function CVForm() {
   const navigate = useNavigate();
   const { addCVSubmission, cvQuestions, updateCVQuestions } = useDataStore();
-  const { user } = useAuthStore();
   const { t, i18n } = useTranslation();
   const isRtl = i18n.language === 'ar' || i18n.language === 'ckb';
   

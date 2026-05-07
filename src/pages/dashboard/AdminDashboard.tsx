@@ -1,20 +1,13 @@
 import React, { useState } from 'react';
 import { useDataStore } from '../../store/dataStore';
-import { useAuthStore } from '../../store/authStore';
-import { Navigate } from 'react-router';
 import { FileText, Building2, Clock, CheckCircle2 } from 'lucide-react';
 import { motion } from 'motion/react';
 import { useTranslation } from 'react-i18next';
 
 export function AdminDashboard() {
   const { t, i18n } = useTranslation();
-  const { user } = useAuthStore();
   const { jobRequests, cvSubmissions, cvQuestions, updateCVQuestions } = useDataStore();
   const [tab, setTab] = useState<'cv' | 'job' | 'settings'>('cv');
-
-  if (!user || user.role !== 'admin') {
-    return <Navigate to="/login" replace />;
-  }
 
   return (
     <div className="max-w-6xl mx-auto py-8 px-4">

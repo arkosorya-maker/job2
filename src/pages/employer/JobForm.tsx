@@ -1,10 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router';
 import { useDataStore } from '../../store/dataStore';
-import { useAuthStore } from '../../store/authStore';
 import { Button } from '../../components/ui/Button';
 import { Input } from '../../components/ui/Input';
-import { InlineAuth } from '../../components/auth/InlineAuth';
 import { motion, AnimatePresence } from 'motion/react';
 import { ArrowRight, ArrowLeft, CheckCircle2 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
@@ -12,7 +10,6 @@ import { useTranslation } from 'react-i18next';
 export function JobForm() {
   const navigate = useNavigate();
   const { addJobRequest, jobQuestions } = useDataStore();
-  const { user } = useAuthStore();
   const { t, i18n } = useTranslation();
   const isRtl = i18n.language === 'ar' || i18n.language === 'ckb';
   
