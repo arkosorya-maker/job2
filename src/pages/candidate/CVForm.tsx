@@ -6,21 +6,13 @@ import { Button } from '../../components/ui/Button';
 import { Input } from '../../components/ui/Input';
 import { InlineAuth } from '../../components/auth/InlineAuth';
 import { motion, AnimatePresence } from 'motion/react';
-import { ArrowRight, ArrowLeft, CheckCircle2 } from 'lucide-react';
+import { ArrowRight, ArrowLeft, CheckCircle2, Send } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-
-type QuestionType = 'text' | 'number' | 'textarea' | 'select' | 'multiselect';
-
-interface FormQuestion {
-  id: string;
-  type: QuestionType;
-  question: string;
-  options?: string[];
-}
+import { FormQuestion, QuestionType } from '../../types';
 
 export function CVForm() {
   const navigate = useNavigate();
-  const { addCVSubmission } = useDataStore();
+  const { addCVSubmission, cvQuestions, updateCVQuestions } = useDataStore();
   const { user } = useAuthStore();
   const { t, i18n } = useTranslation();
   const isRtl = i18n.language === 'ar' || i18n.language === 'ckb';
@@ -29,24 +21,34 @@ export function CVForm() {
   const [answers, setAnswers] = useState<Record<string, any>>({});
   const [isSubmitted, setIsSubmitted] = useState(false);
 
-  const baseQuestions: FormQuestion[] = useMemo(() => [
-    { id: 'q1', type: 'text', question: t('q_name') },
-    { id: 'q_phone', type: 'text', question: t('q_phone') },
-    { id: 'q_dob', type: 'text', question: t('q_dob') },
-    { id: 'q_gender', type: 'select', question: t('q_gender'), options: t('q_gender_opts').split(',') },
-    { id: 'q8', type: 'text', question: t('q_city') },
-    { id: 'q_address', type: 'textarea', question: t('q_address') },
-    { id: 'q2', type: 'multiselect', question: t('q_langs'), options: t('q_langs_opts').split(',') },
-    { id: 'q6', type: 'select', question: t('q_edu'), options: t('q_edu_opts').split(',') },
-    { id: 'q3', type: 'text', question: t('q_field') },
-    { id: 'q_skills', type: 'textarea', question: t('q_skills') },
-    { id: 'q4', type: 'number', question: t('q_exp') },
-    { id: 'q5', type: 'textarea', question: t('q_exp_desc') },
-    { id: 'q7', type: 'select', question: t('q_avail'), options: t('q_avail_opts').split(',') },
-    { id: 'q10', type: 'number', question: t('q_salary') },
-    { id: 'q9', type: 'textarea', question: t('q_cert') },
-    { id: 'q_references', type: 'textarea', question: t('q_references') },
-  ], [t]);
+  const baseQuestions: FormQuestion[] = useMemo(() => {
+    const defaults: FormQuestion[] = [
+      { id: 'q1', type: 'text', question: t('q_name') },
+      { id: 'q_phone', type: 'text', question: t('q_phone') },
+      { id: 'q_dob', type: 'text', question: t('q_dob') },
+      { id: 'q_gender', type: 'select', question: t('q_gender'), options: t('q_gender_opts').split(',') },
+      { id: 'q8', type: 'text', question: t('q_city') },
+      { id: 'q_address', type: 'textarea', question: t('q_address') },
+      { id: 'q2', type: 'multiselect', question: t('q_langs'), options: t('q_langs_opts').split(',') },
+      { id: 'q6', type: 'select', question: t('q_edu'), options: t('q_edu_opts').split(',') },
+      { id: 'q3', type: 'text', question: t('q_field') },
+      { id: 'q_skills', type: 'textarea', question: t('q_skills') },
+      { id: 'q4', type: 'number', question: t('q_exp') },
+      { id: 'q7', type: 'select', question: t('q_avail'), options: t('q_avail_opts').split(',') },
+      { id: 'q10', type: 'number', question: t('q_salary') },
+      { id: 'q9', type: 'textarea', question: t('q_cert') },
+      { id: 'q_references', type: 'textarea', question: t('q_references') },
+    ];
+
+    if (cvQuestions && cvQuestions.length > 0) {
+      const baseIds = ['q1', 'q_phone', 'q_dob', 'q_gender', 'q8', 'q_address', 'q2', 'q6', 'q3', 'q_skills', 'q4', 'q7', 'q10', 'q9', 'q_references'];
+      const extraQuestions = cvQuestions.filter(q => !baseIds.includes(q.id));
+      
+      return [...defaults, ...extraQuestions];
+    }
+    
+    return defaults;
+  }, [t, cvQuestions]);
 
   const questions = useMemo(() => {
     let finalQuestions: FormQuestion[] = [];
@@ -78,9 +80,6 @@ export function CVForm() {
   };
 
   const submitFinal = () => {
-    const currentUser = useAuthStore.getState().user;
-    if (!currentUser) return;
-
     const responses = questions.map(q => ({
       question: q.question,
       answer: answers[q.id]
@@ -88,10 +87,10 @@ export function CVForm() {
 
     addCVSubmission({
       id: `cv-${Date.now()}`,
-      candidate_id: currentUser.id,
-      candidate_name: currentUser.name,
-      candidate_email: currentUser.email,
-      candidate_phone: (answers['q_phone'] as string) || currentUser.phone,
+      candidate_id: `guest-${Date.now()}`,
+      candidate_name: (answers['q1'] as string) || 'Unknown Candidate',
+      candidate_email: '',
+      candidate_phone: (answers['q_phone'] as string) || '',
       target_job: answers['q3'] || 'Unknown Field',
       submitted_at: new Date().toISOString(),
       responses,
@@ -100,14 +99,6 @@ export function CVForm() {
 
     setIsSubmitted(true);
   };
-
-  React.useEffect(() => {
-    if (isAuthStep && user && !isSubmitted) {
-       submitFinal();
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isAuthStep, user]);
-
 
   const currentAnswer = answers[currentQuestion?.id] || (currentQuestion?.type === 'multiselect' ? [] : '');
   const isAnswerValid = (currentQuestion?.id === 'q9' || currentQuestion?.id === 'q_references') ? true : 
@@ -135,26 +126,36 @@ export function CVForm() {
         <p className="text-gray-500 mb-8 max-w-md mx-auto text-lg">
           {t('cv_success_desc')}
         </p>
-        <Button size="lg" className="rounded-full bg-emerald-600 hover:bg-emerald-700 text-white" onClick={() => navigate('/dashboard')}>
-          {t('go_dashboard')}
+        <Button size="lg" className="rounded-full bg-emerald-600 hover:bg-emerald-700 text-white" onClick={() => navigate('/')}>
+          {t('go_home')}
         </Button>
       </motion.div>
     );
   }
 
-  if (isAuthStep && !user) {
+  if (isAuthStep) {
     return (
-      <div className="min-h-[60vh] flex flex-col justify-center py-12">
-        <InlineAuth role="candidate" onComplete={submitFinal} />
-      </div>
-    );
-  }
-
-  if (isAuthStep && user) {
-    return (
-      <div className="min-h-[60vh] flex flex-col items-center justify-center py-12">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-emerald-600"></div>
-      </div>
+      <motion.div 
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="max-w-xl mx-auto text-center py-16 bg-white rounded-3xl shadow-sm border border-gray-100 mt-12"
+      >
+        <div className="w-20 h-20 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-6">
+          <Send className="w-10 h-10" />
+        </div>
+        <h2 className="text-3xl font-bold text-gray-900 mb-4">{t('send_cv')}</h2>
+        <p className="text-gray-500 mb-8 max-w-md mx-auto text-lg">
+          {t('send_cv_desc')}
+        </p>
+        <div className="flex gap-4 justify-center">
+          <Button size="lg" variant="outline" className="rounded-full border-gray-300 text-gray-700" onClick={handleBack}>
+             {t('back')}
+          </Button>
+          <Button size="lg" className="rounded-full bg-emerald-600 hover:bg-emerald-700 text-white" onClick={submitFinal}>
+            {t('send_cv')}
+          </Button>
+        </div>
+      </motion.div>
     );
   }
 

@@ -1,3 +1,13 @@
+export type QuestionType = 'text' | 'number' | 'textarea' | 'select' | 'multiselect';
+
+export interface FormQuestion {
+  id: string;
+  type: QuestionType;
+  question: string;
+  options?: string[]; // Used for select/multiselect
+  required?: boolean;
+}
+
 export type Role = 'employer' | 'candidate' | 'admin';
 
 export interface User {
@@ -25,6 +35,7 @@ export interface JobRequest {
   salary_max: number;
   status: 'pending' | 'reviewed';
   created_at: string;
+  responses?: SmartFormResponse[];
 }
 
 export interface SmartFormResponse {
