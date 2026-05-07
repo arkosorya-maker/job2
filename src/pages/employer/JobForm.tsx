@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
 import { useDataStore } from '../../store/dataStore';
 import { Button } from '../../components/ui/Button';
@@ -9,13 +9,19 @@ import { useTranslation } from 'react-i18next';
 
 export function JobForm() {
   const navigate = useNavigate();
-  const { addJobRequest, jobQuestions } = useDataStore();
+  const { addJobRequest, jobQuestions, fetchData, isLoaded } = useDataStore();
   const { t, i18n } = useTranslation();
   const isRtl = i18n.language === 'ar' || i18n.language === 'ckb';
   
   const [currentStep, setCurrentStep] = useState(0);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [extraAnswers, setExtraAnswers] = useState<Record<string, any>>({});
+
+  useEffect(() => {
+    if (!isLoaded) {
+      fetchData();
+    }
+  }, [fetchData, isLoaded]);
 
   const [formData, setFormData] = useState({
     title: '',

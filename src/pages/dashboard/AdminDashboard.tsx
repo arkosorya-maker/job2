@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDataStore } from '../../store/dataStore';
 import { FileText, Building2, Clock, CheckCircle2 } from 'lucide-react';
 import { motion } from 'motion/react';
@@ -6,8 +6,14 @@ import { useTranslation } from 'react-i18next';
 
 export function AdminDashboard() {
   const { t, i18n } = useTranslation();
-  const { jobRequests, cvSubmissions, cvQuestions, updateCVQuestions } = useDataStore();
+  const { jobRequests, cvSubmissions, cvQuestions, updateCVQuestions, fetchData, isLoaded } = useDataStore();
   const [tab, setTab] = useState<'cv' | 'job' | 'settings'>('cv');
+
+  useEffect(() => {
+    if (!isLoaded) {
+      fetchData();
+    }
+  }, [fetchData, isLoaded]);
 
   return (
     <div className="max-w-6xl mx-auto py-8 px-4">

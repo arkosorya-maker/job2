@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { useNavigate } from 'react-router';
 import { useDataStore } from '../../store/dataStore';
 import { Button } from '../../components/ui/Button';
@@ -10,13 +10,19 @@ import { FormQuestion, QuestionType } from '../../types';
 
 export function CVForm() {
   const navigate = useNavigate();
-  const { addCVSubmission, cvQuestions, updateCVQuestions } = useDataStore();
+  const { addCVSubmission, cvQuestions, fetchData, isLoaded } = useDataStore();
   const { t, i18n } = useTranslation();
   const isRtl = i18n.language === 'ar' || i18n.language === 'ckb';
   
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
   const [answers, setAnswers] = useState<Record<string, any>>({});
   const [isSubmitted, setIsSubmitted] = useState(false);
+
+  useEffect(() => {
+    if (!isLoaded) {
+      fetchData();
+    }
+  }, [fetchData, isLoaded]);
 
   const baseQuestions: FormQuestion[] = useMemo(() => {
     const defaults: FormQuestion[] = [
